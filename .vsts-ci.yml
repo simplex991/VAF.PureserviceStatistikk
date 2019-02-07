@@ -1,0 +1,17 @@
+name: $(Year:yyyy).$(Month)$(Rev:.r)
+
+queue: Build Agent Pool
+
+steps:
+- task: ArchiveFiles@1
+  inputs:
+    rootFolder: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/PureServiceStatistikk.$(Build.BuildNumber).zip'
+
+- task: octopusdeploy.octopus-deploy-build-release-tasks.octopus-push.OctopusPush@2
+  inputs:
+    OctoConnectedServiceName: octopus.vaf.no
+    Package: '$(Build.ArtifactStagingDirectory)/PureServiceStatistikk.$(Build.BuildNumber).zip'
+
+
